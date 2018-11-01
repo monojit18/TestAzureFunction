@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,7 +18,9 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using TestAzureFunction.DataModels;
+using Microsoft.Azure.EventHubs;
 
 namespace TestAzureFunction.QueueTriggers
 {
@@ -40,9 +43,37 @@ namespace TestAzureFunction.QueueTriggers
             if (documentURI == null)
                 return false;
 
-            var documentDataModel = new DocumentDataModel()
+            var ocrDataModel = JsonConvert.DeserializeObject<OCRDataModel>(
+                                            ocrInfoString);
+            if (string.Compare(ocrDataModel.Language, "unk", true) == 0)
             {
 
+                var eventhubConnectionString = Environment
+                                                .GetEnvironmentVariable(
+                                                "OCR_EVENTHUB_CONNECTION");
+
+                var eventhubNameString = Environment
+                                                .GetEnvironmentVariable(
+                                                "OCR_EVENTHUB_NAME");
+                var eventhubBuilder = new EventHubsConnectionStringBuilder(
+                                            eventhubConnectionString)
+                {
+
+                    EntityPath = eventhubNameString
+
+                };
+
+                var eventHubClient = EventHubClient
+                                        .CreateFromConnectionString(
+                                        eventhubBuilder.ToString());
+                var eventData = new EventData(Encoding.UTF8.GetBytes(
+                                                ocrInfoString));
+                await eventHubClient.SendAsync(eventData);
+                
+            }
+
+            var documentDataModel = new DocumentDataModel()
+            {
                 DocumentInfoString = ocrInfoString
             };
 
