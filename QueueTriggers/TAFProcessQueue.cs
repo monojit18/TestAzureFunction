@@ -26,16 +26,17 @@ namespace TestAzureFunction.QueueTriggers
         private static async Task<bool> SaveBlobNameAsync(string ocrInfoString)
         {
 
-            var endPointString = Environment.GetEnvironmentVariable("CosmosDBEndPoint");
-            var authKeyString = Environment.GetEnvironmentVariable("CosmosDBAuthKeyPoint"); 
-            var databaseIdString = Environment.GetEnvironmentVariable("CosmosDBDatabaseId");
-            var collectionIdString = Environment.GetEnvironmentVariable("CosmosDBCollectionId");
+            var endPointString = Environment.GetEnvironmentVariable("COSMOS_DB_END_POINT");
+            var authKeyString = Environment.GetEnvironmentVariable("COSMOS_DB_AUTHKEY_POINT"); 
+            var databaseIdString = Environment.GetEnvironmentVariable("COSMOS_DB_DATABASE_ID");
+            var collectionIdString = Environment.GetEnvironmentVariable("COSMOS_DB_COLLECTION_ID");
 
             var documentClient = new DocumentClient(new Uri(endPointString),
                                                     authKeyString);
 
-            var documentURI = UriFactory.CreateDocumentCollectionUri(databaseIdString,
-                                                                        collectionIdString);
+            var documentURI = UriFactory.CreateDocumentCollectionUri(
+                                            databaseIdString,
+                                            collectionIdString);
             if (documentURI == null)
                 return false;
 
@@ -45,10 +46,12 @@ namespace TestAzureFunction.QueueTriggers
                 DocumentInfoString = ocrInfoString
             };
 
-            var createResponse = await documentClient.CreateDocumentAsync(documentURI,
-                                                                            documentDataModel);
-            var couldCreate = (createResponse.StatusCode == HttpStatusCode.Created
-                                || createResponse.StatusCode == HttpStatusCode.OK);
+            var createResponse = await documentClient.CreateDocumentAsync(
+                                                        documentURI,
+                                                        documentDataModel);
+            var couldCreate = (
+                (createResponse.StatusCode == HttpStatusCode.Created)
+                || (createResponse.StatusCode == HttpStatusCode.OK));
             
             return couldCreate;
 

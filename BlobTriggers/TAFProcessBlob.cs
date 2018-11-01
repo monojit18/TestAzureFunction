@@ -34,8 +34,8 @@ namespace TestAzureFunction.BlobTriggers
 
             var resliliency = DefineAndRetrieveResiliencyStrategy(log);
 
-            var ocrResponse = await resliliency.ExecuteAsync((() => client.PostAsync("https://eastus.api.cognitive.microsoft.com/vision/v1.0/ocr", content)));
-            // var ocrResponse = await client.PostAsync("https://eastus.api.cognitive.microsoft.com/vision/v1.0/ocr", content);
+            // var ocrResponse = await resliliency.ExecuteAsync((() => client.PostAsync("https://eastus.api.cognitive.microsoft.com/vision/v1.0/ocr", content)));
+            var ocrResponse = await client.PostAsync("https://eastus.api.cognitive.microsoft.com/vision/v1.0/ocr", content);
             var parsedResults = await ocrResponse.Content.ReadAsStringAsync();
             return parsedResults;
 
