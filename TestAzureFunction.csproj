@@ -10,6 +10,9 @@
     <PackageReference Include="Polly" Version="6.1.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.DurableTask" Version="1.7.0" />
+    <PackageReference Include="Microsoft.Azure.EventHubs" Version="2.2.1" />
+    <PackageReference Include="Microsoft.Azure.EventHubs.Processor" Version="2.2.1" />
+    <PackageReference Include="Microsoft.Azure.Amqp" Version="2.3.6" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

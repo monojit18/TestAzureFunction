@@ -27,7 +27,8 @@ namespace TestAzureFunction.BlobTriggers
         {
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "b2b86396662049ea949fb4f072353717");
+            var apiKeyString = Environment.GetEnvironmentVariable("OCR_API_KEY");
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKeyString);
 
             var content = new ByteArrayContent(blobContents);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
