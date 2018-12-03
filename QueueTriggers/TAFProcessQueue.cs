@@ -68,45 +68,8 @@ namespace TestAzureFunction.QueueTriggers
         }
 
 
-        // [FunctionName("ProcessQueue")]
-        // [return: Table("ocrinfotable")]
-        // public static OCRInfoRow ProcessQueue([QueueTrigger("ocrinfoqueue")]
-        //                                         CloudQueueMessage cloudQueueMessage,
-        //                                         ILogger log)
-        // {
-
-        //     var queueMessageString = cloudQueueMessage.AsString;
-        //     log.LogDebug(queueMessageString);
-
-        //     var partitionKeyString = "level";
-        //     var rowkeyString = string.Concat(partitionKeyString, "-", cloudQueueMessage.Id);
-        //     var contactInfoString = string.Empty;
-
-        //     if (string.IsNullOrEmpty(queueMessageString) == false)
-        //         contactInfoString = string.Copy(queueMessageString);
-
-        //     var ocrInfoRow = new OCRInfoRow()
-        //     {
-
-        //         PartitionKey = partitionKeyString,
-        //         RowKey = rowkeyString,
-        //         ContactInfo = contactInfoString
-
-        //     };
-
-        //     return ocrInfoRow;
-            
-        // }
-
-
     }
 
-    public class OCRInfoRow : TableEntity
-    {
-
-        public string ContactInfo { get; set; }
-
-    }
 }
 
 
